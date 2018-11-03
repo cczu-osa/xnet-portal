@@ -14,10 +14,10 @@ const (
 	ssoServiceUrlFmt = ssoLoginUrl + "?service=%s"
 )
 
-// SsoLogin logs the user in sso.cczu.edu.cn.
+// SSOLogin logs the user in sso.cczu.edu.cn.
 // The cookies produced by it can then be used to login other sites like
 // s.cczu.edu.cn, etc.
-func (c *Client) SsoLogin(sid, password string) (ok bool, err error) {
+func (c *Client) SSOLogin(sid, password string) (ok bool, err error) {
 	httpClient := c.HttpClient
 
 	res, err := httpClient.Get(ssoLoginUrl)

@@ -66,6 +66,10 @@ func (c *LoginController) Post() {
 		if succeeded {
 			beego.Debug("user ", sid, " succeeded to login, redirect now")
 			SetSessionUser(&c.Controller, user)
+
+			flash := beego.NewFlash()
+			flash.Notice("登录成功")
+			flash.Store(&c.Controller)
 			c.Redirect("/", 302)
 		}
 	}
@@ -77,7 +81,7 @@ func (c *LoginController) Post() {
 }
 
 func (c *LoginController) loginThroughCczu(sid, password string) (ok bool, user *models.User) {
-	client := GetSessionCczuClient(&c.Controller)
+	client := GetSessionCCZUClient(&c.Controller)
 	ok, _ = client.Login(sid, password)
 
 	if !ok {
@@ -110,6 +114,6 @@ type LogoutController struct {
 
 func (c *LogoutController) Get() {
 	DelSessionUser(&c.Controller)
-	DelSessionCczuClient(&c.Controller)
+	DelSessionCCZUClient(&c.Controller)
 	c.Redirect("/", 302)
 }

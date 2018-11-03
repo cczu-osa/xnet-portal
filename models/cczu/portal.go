@@ -14,7 +14,7 @@ const (
 )
 
 // PortalLogin logs the user in s.cczu.edu.cn.
-// It must be called only after a successful SsoLogin call.
+// It must be called only after a successful SSOLogin call.
 func (c *Client) PortalLogin() (ok bool, err error) {
 	httpClient := c.HttpClient
 	res, err := httpClient.Get(ssoServicePortalUrl)

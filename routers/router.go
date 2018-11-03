@@ -10,4 +10,6 @@ func init() {
 	beego.Router("/login", &controllers.LoginController{})
 	beego.Router("/logout", &controllers.LogoutController{})
 	beego.Router("/add-device", &controllers.AddDeviceController{})
+	beego.Router("/edit-device", &controllers.EditDeviceController{})
+	beego.Router("/remove-device", &controllers.RemoveDeviceController{})
 }

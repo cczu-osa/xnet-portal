@@ -7,6 +7,8 @@ type Device struct {
 	Address string `orm:"unique;index"`
 	Name    string
 	User    *User `orm:"rel(fk)"`
+
+	IPAssignments []string `orm:"-"`
 }
 
 func init() {

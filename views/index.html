@@ -16,7 +16,8 @@
 <p><a href="logout">注销</a></p>
 
 <div>
-  <p>{{.flash.error}}</p>
+  <p style="color: blue;">{{.flash.notice}}</p>
+  <p style="color: red;">{{.flash.error}}</p>
 </div>
 
 <div style="border: 1px solid gray;">
@@ -31,7 +32,21 @@
 <div style="border: 1px solid gray;">
   <h2>设备列表</h2>
 {{range .User.Devices}}
-  <p>名称：{{.Name}}，地址：{{.Address}}</p>
+  <p>
+  <form action="edit-device" method="post">
+    名称：
+    <input type="text" name="name" value="{{.Name}}">
+    <input type="text" name="address" value="{{.Address}}" hidden>
+    <input type="submit" value="修改">
+  </form>
+  地址：{{.Address}}<br>
+  IP：{{range .IPAssignments}}<br>{{.}}{{end}}
+  <form action="remove-device" method="post">
+    <input type="text" name="address" value="{{.Address}}" hidden>
+    <input type="submit" value="移除">
+  </form>
+  </p>
+  <hr>
 {{end}}
 </div>
 </body>

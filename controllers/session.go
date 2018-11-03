@@ -6,7 +6,7 @@ import (
 	"github.com/cczu-osa/xnet-portal/models/cczu"
 )
 
-func GetSessionCczuClient(controller *beego.Controller) *cczu.Client {
+func GetSessionCCZUClient(controller *beego.Controller) *cczu.Client {
 	client := controller.GetSession("client")
 	if client == nil {
 		client = cczu.NewClient()
@@ -15,7 +15,7 @@ func GetSessionCczuClient(controller *beego.Controller) *cczu.Client {
 	return client.(*cczu.Client)
 }
 
-func DelSessionCczuClient(controller *beego.Controller) {
+func DelSessionCCZUClient(controller *beego.Controller) {
 	controller.DelSession("client")
 }
 

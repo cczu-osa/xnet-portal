@@ -20,7 +20,7 @@ func NewClient() *Client {
 }
 
 func (c *Client) Login(sid, password string) (ok bool, err error) {
-	ok, err = c.SsoLogin(sid, password)
+	ok, err = c.SSOLogin(sid, password)
 	if !ok {
 		return
 	}
