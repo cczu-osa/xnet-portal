@@ -19,7 +19,7 @@ func NewClient() *Client {
 	return client
 }
 
-func (c *Client) Login(sid string, password string) (ok bool, err error) {
+func (c *Client) Login(sid, password string) (ok bool, err error) {
 	ok, err = c.SsoLogin(sid, password)
 	if !ok {
 		return
@@ -27,4 +27,8 @@ func (c *Client) Login(sid string, password string) (ok bool, err error) {
 
 	ok, err = c.PortalLogin()
 	return
+}
+
+func (c *Client) GetBasicInfo() (BasicInfo, error) {
+	return c.PortalGetBasicInfo()
 }

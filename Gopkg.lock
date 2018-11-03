@@ -18,7 +18,7 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:a3bcc898f453d7238c708ac468849796bdf6ca33fc540195a271fd7a3b360d2b"
+  digest = "1:0a152de447111708ad82dac6bddc7c87294937cdd70d608891ef6787549b1b07"
   name = "github.com/astaxie/beego"
   packages = [
     ".",
@@ -27,6 +27,7 @@
     "context/param",
     "grace",
     "logs",
+    "orm",
     "session",
     "toolbox",
     "utils",
@@ -34,6 +35,14 @@
   pruneopts = "UT"
   revision = "053a075344c118a5cc41981b29ef612bb53d20ca"
   version = "v1.10.1"
+
+[[projects]]
+  digest = "1:4a49346ca45376a2bba679ca0e83bec949d780d4e927931317904bad482943ec"
+  name = "github.com/mattn/go-sqlite3"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c7c4067b79cc51e6dfdcef5c702e74b1e0fa7c75"
+  version = "v1.10.0"
 
 [[projects]]
   digest = "1:a2057c5b6feb8feb081ce9987f0e4d0713c6b3a6d3824900e35750f349223a25"
@@ -70,6 +79,8 @@
   input-imports = [
     "github.com/PuerkitoBio/goquery",
     "github.com/astaxie/beego",
+    "github.com/astaxie/beego/orm",
+    "github.com/mattn/go-sqlite3",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

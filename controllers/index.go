@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -13,6 +14,8 @@ func (c *IndexController) Get() {
 	if user == nil {
 		c.Redirect("/login", 302)
 	}
+
+	fmt.Printf("%+v", user)
 
 	c.Data["User"] = user
 	c.TplName = "index.html"
