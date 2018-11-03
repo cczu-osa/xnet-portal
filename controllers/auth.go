@@ -14,6 +14,7 @@ type LoginController struct {
 }
 
 func (c *LoginController) Get() {
+	beego.ReadFromRequest(&c.Controller)
 	user := c.GetSession("user")
 	if user != nil {
 		// The user had logged in before
@@ -70,7 +71,10 @@ func (c *LoginController) Post() {
 		}
 	}
 
-	c.Get()
+	flash := beego.NewFlash()
+	flash.Error("登录失败，用户名密码可能不正确")
+	flash.Store(&c.Controller)
+	c.Redirect("/login", 302)
 }
 
 func (c *LoginController) loginThroughCczu(sid, password string) (ok bool, user *models.User) {
@@ -109,8 +113,4 @@ func (c *LogoutController) Get() {
 	c.DelSession("user")
 	DelSessionCczuClient(&c.Controller)
 	c.Redirect("/", 302)
-}
-
-func (c *LogoutController) Post() {
-	c.Get()
 }
