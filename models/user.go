@@ -7,6 +7,7 @@ type User struct {
 	Sid          string `orm:"unique;index"`
 	PasswordHash string
 	Info         *UserInfo `orm:"rel(one);null"`
+	Devices      []*Device `orm:"reverse(many)"`
 }
 
 type UserInfo struct {

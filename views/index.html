@@ -14,5 +14,25 @@
 <p>院系：<span class="school">{{.User.Info.School}}</span></p>
 <p>专业：<span class="major">{{.User.Info.Major}}</span></p>
 <p><a href="logout">注销</a></p>
+
+<div>
+  <p>{{.flash.error}}</p>
+</div>
+
+<div style="border: 1px solid gray;">
+  <h2>添加设备</h2>
+  <form action="add-device" method="post">
+    <p><input type="text" name="address" placeholder="设备地址（Node ID）"></p>
+    <p><input type="text" name="name" placeholder="设备名称"></p>
+    <p><input type="submit" value="添加"></p>
+  </form>
+</div>
+
+<div style="border: 1px solid gray;">
+  <h2>设备列表</h2>
+{{range .User.Devices}}
+  <p>名称：{{.Name}}，地址：{{.Address}}</p>
+{{end}}
+</div>
 </body>
 </html>

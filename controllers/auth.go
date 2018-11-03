@@ -15,9 +15,8 @@ type LoginController struct {
 
 func (c *LoginController) Get() {
 	beego.ReadFromRequest(&c.Controller)
-	user := c.GetSession("user")
+	user := GetSessionUser(&c.Controller)
 	if user != nil {
-		// The user had logged in before
 		c.Redirect("/", 302)
 	}
 	c.TplName = "login.html"
@@ -32,7 +31,7 @@ func (c *LoginController) Post() {
 		o := orm.NewOrm()
 
 		user := &models.User{Sid: sid}
-		err := o.Read(user, "sid")
+		err := o.Read(user, "Sid")
 
 		if err != nil {
 			beego.Debug("this is the first login of ", sid)
@@ -66,7 +65,7 @@ func (c *LoginController) Post() {
 
 		if succeeded {
 			beego.Debug("user ", sid, " succeeded to login, redirect now")
-			c.SetSession("user", user)
+			SetSessionUser(&c.Controller, user)
 			c.Redirect("/", 302)
 		}
 	}
@@ -110,7 +109,7 @@ type LogoutController struct {
 }
 
 func (c *LogoutController) Get() {
-	c.DelSession("user")
+	DelSessionUser(&c.Controller)
 	DelSessionCczuClient(&c.Controller)
 	c.Redirect("/", 302)
 }

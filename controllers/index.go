@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 type IndexController struct {
@@ -10,13 +10,10 @@ type IndexController struct {
 }
 
 func (c *IndexController) Get() {
-	user := c.GetSession("user")
-	if user == nil {
-		c.Redirect("/login", 302)
-	}
-
-	fmt.Printf("%+v", user)
-
+	beego.ReadFromRequest(&c.Controller)
+	user := MustGetSessionUser(&c.Controller)
+	o := orm.NewOrm()
+	o.LoadRelated(user, "Devices")
 	c.Data["User"] = user
 	c.TplName = "index.html"
 }
