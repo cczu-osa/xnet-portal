@@ -4,15 +4,15 @@ import "github.com/astaxie/beego/orm"
 
 type User struct {
 	Id           int
-	Sid          string `orm:"size(10);unique;index"`
+	Sid          string `orm:"unique;index"`
 	PasswordHash string
 	Info         *UserInfo `orm:"rel(one);null"`
 }
 
 type UserInfo struct {
 	Id     int
-	Sid    string `orm:"size(10);unique;index"`
-	Name   string `orm:"size(20)"`
+	Sid    string `orm:"unique;index"`
+	Name   string
 	School string
 	Major  string
 }
