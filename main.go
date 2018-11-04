@@ -15,6 +15,6 @@ func init() {
 }
 
 func main() {
-	// orm.RunSyncdb("default", true, false)
+	orm.RunSyncdb("default", false, false)
 	beego.Run()
 }
