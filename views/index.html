@@ -1,8 +1,8 @@
 <section>
   <h2>关于</h2>
   <p>CCZU XNet 是一个面向常州大学学生的私有 P2P 网络，可用于内网穿透、文件共享、内部 web 服务等。</p>
-  <p>ZeroTier 网络 ID：<b>c2381b9de99e5b0a</b></p>
   <p>使用方式见 <a href="https://github.com/cczu-osa/xnet-portal/wiki/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B" target="_blank">使用教程</a>。
+  <p>ZeroTier 网络 ID: <b>c2381b9de99e5b0a</b></p>
   </p>
 </section>
 
@@ -48,38 +48,38 @@
   <h2>设备列表</h2>
   <table id="device-table">
     <thead>
-    <tr>
-      <th>地址</th>
-      <th>名称</th>
-      <th>已分配 IP</th>
-      <th>操作</th>
-    </tr>
+      <tr>
+        <th>地址</th>
+        <th>名称</th>
+        <th>已分配 IP</th>
+        <th>操作</th>
+      </tr>
     </thead>
     <tbody>
-    {{range .User.Devices}}
-    <tr>
-      <td>{{.Address}}</td>
-      <td>
-        <form id="edit-device-form-{{.Address}}" action="edit-device" method="post">
-          <input type="text" name="name" value="{{.Name}}">
-          <input type="text" name="address" value="{{.Address}}" hidden>
-          <input type="submit" hidden>
-          <a href="javascript:editDevice('{{.Address}}');">修改</a>
-        </form>
-      </td>
-      <td>
-      {{range .IPAssignments}}
-        <div>{{.}}</div>
+      {{range .User.Devices}}
+      <tr>
+        <td>{{.Address}}</td>
+        <td>
+          <form id="edit-device-form-{{.Address}}" action="edit-device" method="post">
+            <input type="text" name="name" value="{{.Name}}">
+            <input type="text" name="address" value="{{.Address}}" hidden>
+            <input type="submit" hidden>
+            <a href="javascript:editDevice('{{.Address}}');">修改</a>
+          </form>
+        </td>
+        <td>
+          {{range .IPAssignments}}
+          <div>{{.}}</div>
+          {{end}}
+        </td>
+        <td>
+          <form id="remove-device-form-{{.Address}}" action="remove-device" method="post">
+            <input type="text" name="address" value="{{.Address}}" hidden>
+            <a href="javascript:removeDevice('{{.Address}}');">移除</a>
+          </form>
+        </td>
+      </tr>
       {{end}}
-      </td>
-      <td>
-        <form id="remove-device-form-{{.Address}}" action="remove-device" method="post">
-          <input type="text" name="address" value="{{.Address}}" hidden>
-          <a href="javascript:removeDevice('{{.Address}}');">移除</a>
-        </form>
-      </td>
-    </tr>
-    {{end}}
     </tbody>
   </table>
 
