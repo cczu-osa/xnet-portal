@@ -24,7 +24,7 @@ func (c *LoginController) Get() {
 }
 
 func (c *LoginController) Post() {
-	sid := strings.TrimSpace(c.GetString("sid"))
+	sid := strings.TrimSpace(c.GetString("username"))
 	password := strings.TrimSpace(c.GetString("password"))
 
 	if len(sid) > 0 && len(password) > 0 {
