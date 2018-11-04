@@ -63,6 +63,7 @@
         <form id="edit-device-form-{{.Address}}" action="edit-device" method="post">
           <input type="text" name="name" value="{{.Name}}">
           <input type="text" name="address" value="{{.Address}}" hidden>
+          <input type="submit" hidden>
           <a href="javascript:editDevice('{{.Address}}');">修改</a>
         </form>
       </td>
