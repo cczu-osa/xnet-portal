@@ -36,5 +36,6 @@ func (c *IndexController) Get() {
 	}
 
 	c.Data["User"] = user
+	c.Layout = "layout.html"
 	c.TplName = "index.html"
 }

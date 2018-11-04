@@ -19,6 +19,7 @@ func (c *LoginController) Get() {
 	if user != nil {
 		c.Redirect("/", 302)
 	}
+	c.Layout = "layout.html"
 	c.TplName = "login.html"
 }
 

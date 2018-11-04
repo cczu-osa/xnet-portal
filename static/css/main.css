@@ -1,0 +1,16 @@
+.main {
+    padding: 30px 20px;
+}
+
+.container {
+    max-width: 70rem;
+    margin: 0 auto;
+}
+
+#device-table form {
+    display: inline-block;
+}
+
+.hack hr:after {
+    content: "------------------------------------------------------------------------------------------------------------------------------------------------";
+}

@@ -1,53 +1,91 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<section>
+  <h2>关于</h2>
+  <p>CCZU XNet 是一个面向常州大学学生的私有 P2P 网络，可用于内网穿透、文件共享、内部 web 服务等。使用方式见 <a href="#">使用教程</a>。</p>
+</section>
 
-  <title>CCZU XNet</title>
-</head>
-<body>
-<h1>CCZU XNet</h1>
-<p>欢迎，<span class="name">{{.User.Info.Name}}</span>。</p>
-<p>学号：<span class="sid">{{.User.Info.Sid}}</span></p>
-<p>院系：<span class="school">{{.User.Info.School}}</span></p>
-<p>专业：<span class="major">{{.User.Info.Major}}</span></p>
-<p><a href="logout">注销</a></p>
+<hr>
 
-<div>
-  <p style="color: blue;">{{.flash.notice}}</p>
-  <p style="color: red;">{{.flash.error}}</p>
-</div>
+<section>
+  <h2>登录信息</h2>
+  <div class="media">
+    <div class="media-body">
+      <div class="media-heading">欢迎, <span>{{.User.Info.Name}}</span>! <a href="logout">注销</a></div>
+      <div class="media-content user-info">
+        <div class="user-info-item">学号: <span>{{.User.Info.Sid}}</span></div>
+        <div class="user-info-item">院系: <span>{{.User.Info.School}}</span></div>
+        <div class="user-info-item">专业: <span>{{.User.Info.Major}}</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div style="border: 1px solid gray;">
+<hr>
+
+<section>
   <h2>添加设备</h2>
-  <form action="add-device" method="post">
-    <p><input type="text" name="address" placeholder="设备地址（Node ID）"></p>
-    <p><input type="text" name="name" placeholder="设备名称"></p>
-    <p><input type="submit" value="添加"></p>
+  <form action="add-device" method="post" class="form">
+    <fieldset class="form-group">
+      <label for="address">*地址:</label>
+      <input name="address" type="text" placeholder="##########" class="form-control">
+      <div class="help-block">填写 ZeroTier One 中显示的十位设备地址（也叫 Node ID）</div>
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="name">名称:</label>
+      <input name="name" type="text" placeholder="我的树莓派" class="form-control">
+    </fieldset>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-block">添加</button>
+    </div>
   </form>
-</div>
+</section>
 
-<div style="border: 1px solid gray;">
+<hr>
+
+<section>
   <h2>设备列表</h2>
-{{range .User.Devices}}
-  <p>
-  <form action="edit-device" method="post">
-    名称：
-    <input type="text" name="name" value="{{.Name}}">
-    <input type="text" name="address" value="{{.Address}}" hidden>
-    <input type="submit" value="修改">
-  </form>
-  地址：{{.Address}}<br>
-  IP：{{range .IPAssignments}}<br>{{.}}{{end}}
-  <form action="remove-device" method="post">
-    <input type="text" name="address" value="{{.Address}}" hidden>
-    <input type="submit" value="移除">
-  </form>
-  </p>
-  <hr>
-{{end}}
-</div>
-</body>
-</html>
+  <table id="device-table">
+    <thead>
+    <tr>
+      <th>地址</th>
+      <th>名称</th>
+      <th>已分配 IP</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .User.Devices}}
+    <tr>
+      <td>{{.Address}}</td>
+      <td>
+        <form id="edit-device-form-{{.Address}}" action="edit-device" method="post">
+          <input type="text" name="name" value="{{.Name}}">
+          <input type="text" name="address" value="{{.Address}}" hidden>
+          <a href="javascript:editDevice('{{.Address}}');">修改</a>
+        </form>
+      </td>
+      <td>
+      {{range .IPAssignments}}
+        <div>{{.}}</div>
+      {{end}}
+      </td>
+      <td>
+        <form id="remove-device-form-{{.Address}}" action="remove-device" method="post">
+          <input type="text" name="address" value="{{.Address}}" hidden>
+          <a href="javascript:removeDevice('{{.Address}}');">移除</a>
+        </form>
+      </td>
+    </tr>
+    {{end}}
+    </tbody>
+  </table>
+
+  <script>
+    function editDevice(address) {
+      document.querySelector(`#edit-device-form-${address}`).submit()
+    }
+
+    function removeDevice(address) {
+      document.querySelector(`#remove-device-form-${address}`).submit()
+    }
+  </script>
+</section>

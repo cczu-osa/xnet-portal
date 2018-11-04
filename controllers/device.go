@@ -38,7 +38,7 @@ func (c *AddDeviceController) Post() {
 	name := strings.TrimSpace(c.GetString("name"))
 
 	if !regexp.MustCompile("[0-9a-z]{10}").MatchString(address) {
-		flash.Error("设备地址格式不正确，应为 10 位字母和数字")
+		flash.Error("设备地址格式不正确，应为十位字母和数字")
 	} else {
 		o := orm.NewOrm()
 

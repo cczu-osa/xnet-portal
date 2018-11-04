@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-  <title>CCZU XNet</title>
-</head>
-<body>
-<h1>CCZU XNet</h1>
-<form action="login" method="post">
-  <p><input type="text" name="sid" placeholder="学号"></p>
-  <p><input type="password" name="password" placeholder="密码"></p>
-  <p style="color: red;">{{.flash.error}}</p>
-  <p><input type="submit" value="登录"></p>
-  <p>注意：如果这是你第一次登录，可能需要 3～10 秒时间，请耐心等待</p>
-</form>
-</body>
-</html>
+<section>
+  <h2>登录</h2>
+  <form action="login" method="post" class="form">
+    <fieldset class="form-group">
+      <label for="sid">*学号:</label>
+      <input name="sid" type="text" class="form-control">
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="password">*密码:</label>
+      <input name="password" type="password" class="form-control">
+      <div class="help-block">填写教务网站密码，默认为身份证号后六位</div>
+    </fieldset>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-block">登录</button>
+      <div class="help-block">如果是第一次登录，可能需要 3～10 秒时间，请耐心等待</div>
+    </div>
+  </form>
+</section>
