@@ -2,3 +2,4 @@
 vendor
 conf/app.conf
 data
+dist
