@@ -2,9 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"net/http"
 )
 
 type IndexController struct {

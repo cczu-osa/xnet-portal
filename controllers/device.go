@@ -126,11 +126,11 @@ func (c *RemoveDeviceController) Post() {
 
 		url := zerotierCtlApi("/network/" + zerotierNetworkId + "/member/" + address)
 
-		//req, _ := http.NewRequest(http.MethodDelete, url, nil)
-		//res, err := http.DefaultClient.Do(req)
-		//if err == nil && res.StatusCode == 200 {
-		//	succeeded = true
-		//}
+		// req, _ := http.NewRequest(http.MethodDelete, url, nil)
+		// res, err := http.DefaultClient.Do(req)
+		// if err == nil && res.StatusCode == 200 {
+		// 	succeeded = true
+		// }
 
 		// Set field "authorized" to false instead of deleting it,
 		// because the ZeroTier's API seems to have problem deleting nodes
