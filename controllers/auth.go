@@ -32,15 +32,11 @@ func (c *LoginController) Post() {
 		o := orm.NewOrm()
 
 		user := &models.User{Sid: sid}
-		err := o.Read(user, "Sid")
-
-		if err != nil {
+		if err := o.Read(user, "Sid"); err != nil {
 			beego.Debug("this is the first login of ", sid)
 
-			var ok bool
-			ok, user = c.loginThroughCczu(sid, password)
-			if ok {
-				succeeded = true
+			var ok bool // Declare this before using it, to avoid hiding "user" of outer scope
+			if ok, user = c.loginThroughCczu(sid, password); ok {
 				o.Begin()
 				userInfoInserted := false
 				if user.Info != nil {
@@ -52,15 +48,24 @@ func (c *LoginController) Post() {
 				if userInfoInserted {
 					o.Insert(user)
 					o.Commit()
+					succeeded = true
 				} else {
 					o.Rollback()
 				}
 			}
+		} else if len(user.PasswordHash) == 0 {
+			beego.Debug("there is not password hash for ", sid)
+			if ok, u := c.loginThroughCczu(sid, password); ok {
+				user.PasswordHash = u.PasswordHash
+				o.Update(user, "PasswordHash")
+				o.Read(user.Info)
+				succeeded = true
+			}
 		} else {
 			beego.Debug("user ", sid, " is already in our db")
-			if user.PasswordHash == utils.HashPassword(password) {
-				succeeded = true
+			if utils.CompareHashAndPassword(user.PasswordHash, password) {
 				o.Read(user.Info)
+				succeeded = true
 			}
 		}
 
@@ -90,9 +95,10 @@ func (c *LoginController) loginThroughCczu(sid, password string) (ok bool, user 
 	}
 
 	// Succeeded to login
+	passwordHash := utils.GeneratePasswordHash(password)
 	user = &models.User{
 		Sid:          sid,
-		PasswordHash: utils.HashPassword(password),
+		PasswordHash: passwordHash,
 	}
 
 	// Try to get the student's info
