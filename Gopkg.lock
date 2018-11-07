@@ -45,11 +45,13 @@
   version = "v1.10.0"
 
 [[projects]]
-  digest = "1:a2057c5b6feb8feb081ce9987f0e4d0713c6b3a6d3824900e35750f349223a25"
+  digest = "1:93f36793477e25b53507074bce6282e96efe7028b9adc8492c52bdb72f192328"
   name = "golang.org/x/crypto"
   packages = [
     "acme",
     "acme/autocert",
+    "bcrypt",
+    "blowfish",
   ]
   pruneopts = "UT"
   revision = "c126467f60eb25f8f27e5a981f32a87e3965053f"
@@ -81,6 +83,7 @@
     "github.com/astaxie/beego",
     "github.com/astaxie/beego/orm",
     "github.com/mattn/go-sqlite3",
+    "golang.org/x/crypto/bcrypt",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

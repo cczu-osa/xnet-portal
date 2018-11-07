@@ -1,17 +1,15 @@
 package utils
 
 import (
-	"crypto/md5"
-	"fmt"
-	"io"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func GeneratePasswordHash(password string) string {
-	passwordHash := md5.New()
-	io.WriteString(passwordHash, password)
-	return fmt.Sprintf("%x", passwordHash.Sum(nil))
+	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hash)
 }
 
 func CompareHashAndPassword(hash, password string) bool {
-	return hash == GeneratePasswordHash(password)
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
