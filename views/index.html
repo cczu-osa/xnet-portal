@@ -10,16 +10,7 @@
 
 <section>
   <h2>登录信息</h2>
-  <div class="media">
-    <div class="media-body">
-      <div class="media-heading">欢迎, <span>{{.User.Info.Name}}</span>! <a href="logout">注销</a></div>
-      <div class="media-content user-info">
-        <div class="user-info-item">学号: <span>{{.User.Info.Sid}}</span></div>
-        <div class="user-info-item">院系: <span>{{.User.Info.School}}</span></div>
-        <div class="user-info-item">专业: <span>{{.User.Info.Major}}</span></div>
-      </div>
-    </div>
-  </div>
+  <p>学号: <span>{{.User.Sid}}</span> <a href="logout">注销</a></p>
 </section>
 
 <hr>
@@ -48,38 +39,38 @@
   <h2>设备列表</h2>
   <table id="device-table">
     <thead>
-      <tr>
-        <th>地址</th>
-        <th>名称</th>
-        <th>已分配 IP</th>
-        <th>操作</th>
-      </tr>
+    <tr>
+      <th>地址</th>
+      <th>名称</th>
+      <th>已分配 IP</th>
+      <th>操作</th>
+    </tr>
     </thead>
     <tbody>
-      {{range .User.Devices}}
-      <tr>
-        <td>{{.Address}}</td>
-        <td>
-          <form id="edit-device-form-{{.Address}}" action="edit-device" method="post">
-            <input type="text" name="name" value="{{.Name}}">
-            <input type="text" name="address" value="{{.Address}}" hidden>
-            <input type="submit" hidden>
-            <a href="javascript:editDevice('{{.Address}}');">修改</a>
-          </form>
-        </td>
-        <td>
-          {{range .IPAssignments}}
-          <div>{{.}}</div>
-          {{end}}
-        </td>
-        <td>
-          <form id="remove-device-form-{{.Address}}" action="remove-device" method="post">
-            <input type="text" name="address" value="{{.Address}}" hidden>
-            <a href="javascript:removeDevice('{{.Address}}');">移除</a>
-          </form>
-        </td>
-      </tr>
+    {{range .User.Devices}}
+    <tr>
+      <td>{{.Address}}</td>
+      <td>
+        <form id="edit-device-form-{{.Address}}" action="edit-device" method="post">
+          <input type="text" name="name" value="{{.Name}}">
+          <input type="text" name="address" value="{{.Address}}" hidden>
+          <input type="submit" hidden>
+          <a href="javascript:editDevice('{{.Address}}');">修改</a>
+        </form>
+      </td>
+      <td>
+      {{range .IPAssignments}}
+        <div>{{.}}</div>
       {{end}}
+      </td>
+      <td>
+        <form id="remove-device-form-{{.Address}}" action="remove-device" method="post">
+          <input type="text" name="address" value="{{.Address}}" hidden>
+          <a href="javascript:removeDevice('{{.Address}}');">移除</a>
+        </form>
+      </td>
+    </tr>
+    {{end}}
     </tbody>
   </table>
 

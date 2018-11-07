@@ -34,37 +34,21 @@ func (c *LoginController) Post() {
 		user := &models.User{Sid: sid}
 		if err := o.Read(user, "Sid"); err != nil {
 			beego.Debug("this is the first login of ", sid)
-
-			var ok bool // Declare this before using it, to avoid hiding "user" of outer scope
-			if ok, user = c.loginThroughCczu(sid, password); ok {
-				o.Begin()
-				userInfoInserted := false
-				if user.Info != nil {
-					_, err := o.Insert(user.Info)
-					if err == nil {
-						userInfoInserted = true
-					}
-				}
-				if userInfoInserted {
-					o.Insert(user)
-					o.Commit()
-					succeeded = true
-				} else {
-					o.Rollback()
-				}
+			if ok, u := c.loginThroughCczu(sid, password); ok {
+				user = u
+				o.Insert(user)
+				succeeded = true
 			}
 		} else if len(user.PasswordHash) == 0 {
 			beego.Debug("there is not password hash for ", sid)
 			if ok, u := c.loginThroughCczu(sid, password); ok {
 				user.PasswordHash = u.PasswordHash
 				o.Update(user, "PasswordHash")
-				o.Read(user.Info)
 				succeeded = true
 			}
 		} else {
 			beego.Debug("user ", sid, " is already in our db")
 			if utils.CompareHashAndPassword(user.PasswordHash, password) {
-				o.Read(user.Info)
 				succeeded = true
 			}
 		}
@@ -88,9 +72,7 @@ func (c *LoginController) Post() {
 
 func (c *LoginController) loginThroughCczu(sid, password string) (ok bool, user *models.User) {
 	client := GetSessionCCZUClient(&c.Controller)
-	ok, _ = client.Login(sid, password)
-
-	if !ok {
+	if ok, _ = client.Login(sid, password); !ok {
 		return
 	}
 
@@ -100,18 +82,6 @@ func (c *LoginController) loginThroughCczu(sid, password string) (ok bool, user 
 		Sid:          sid,
 		PasswordHash: passwordHash,
 	}
-
-	// Try to get the student's info
-	basicInfo, err := client.GetBasicInfo()
-	if err == nil {
-		user.Info = &models.UserInfo{
-			Sid:    basicInfo.Sid,
-			Name:   basicInfo.Name,
-			School: basicInfo.School,
-			Major:  basicInfo.Major,
-		}
-	}
-
 	return
 }
 
