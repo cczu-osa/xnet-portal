@@ -72,7 +72,7 @@ func (c *LoginController) Post() {
 
 func (c *LoginController) loginThroughCczu(sid, password string) (ok bool, user *models.User) {
 	client := GetSessionCCZUClient(&c.Controller)
-	if ok, _ = client.Login(sid, password); !ok {
+	if ok, _ = client.SSOLogin(sid, password); !ok {
 		return
 	}
 
