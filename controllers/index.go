@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
-	"net/http"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/cczu-osa/xnet-portal/models/zerotier"
 )
 
 type IndexController struct {
@@ -19,19 +17,8 @@ func (c *IndexController) Get() {
 	o.LoadRelated(user, "Devices")
 
 	for _, device := range user.Devices {
-		// TODO: Move ZeroTier API call to package "models"
-		url := zerotierCtlApi("/network/" + zerotierNetworkId + "/member/" + device.Address)
-		res, err := http.Get(url)
-		if err == nil && res.StatusCode == 200 {
-			decoder := json.NewDecoder(res.Body)
-			var ztMember map[string]interface{}
-			err = decoder.Decode(&ztMember)
-			if err == nil {
-				device.IPAssignments = make([]string, 0)
-				for _, ip := range ztMember["ipAssignments"].([]interface{}) {
-					device.IPAssignments = append(device.IPAssignments, ip.(string))
-				}
-			}
+		if member, err := zerotier.GetMember(device.Address); err == nil {
+			device.IPAssignments = member.IPAssignments
 		}
 	}
 

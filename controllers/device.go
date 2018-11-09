@@ -1,30 +1,14 @@
 package controllers
 
 import (
-	"bytes"
-	"encoding/json"
-	"net/http"
 	"regexp"
 	"strings"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/cczu-osa/xnet-portal/models"
+	"github.com/cczu-osa/xnet-portal/models/zerotier"
 )
-
-var (
-	zerotierCtlApiRoot   = beego.AppConfig.String("zerotierctlapiroot")
-	zerotierCtlAuthToken = beego.AppConfig.String("zerotierctlauthtoken")
-	zerotierNetworkId    = beego.AppConfig.String("zerotiernetworkid")
-)
-
-func init() {
-	zerotierCtlApiRoot = strings.TrimSuffix(zerotierCtlApiRoot, "/")
-}
-
-func zerotierCtlApi(subpath string) string {
-	return zerotierCtlApiRoot + subpath + "?auth=" + zerotierCtlAuthToken
-}
 
 type AddDeviceController struct {
 	beego.Controller
@@ -48,23 +32,9 @@ func (c *AddDeviceController) Post() {
 			// The device is already added
 			flash.Error("该设备已添加过，请勿重复添加")
 		} else {
-			succeeded := false
 			o.Begin()
-
-			// Save device to db
 			o.Insert(device)
-
-			// Authorize the device in ZeroTier network
-			url := zerotierCtlApi("/network/" + zerotierNetworkId + "/member/" + address)
-			body, _ := json.Marshal(map[string]interface{}{
-				"authorized": true,
-			})
-			res, err := http.Post(url, "application/json", bytes.NewBuffer(body))
-			if err == nil && res.StatusCode == 200 {
-				succeeded = true
-			}
-
-			if succeeded {
+			if zerotier.AddMember(address) {
 				o.Commit()
 				flash.Notice("添加成功")
 			} else {
@@ -120,29 +90,9 @@ func (c *RemoveDeviceController) Post() {
 	if err != nil {
 		flash.Error("没有找到设备")
 	} else {
-		succeeded := false
 		o.Begin()
 		o.Delete(device)
-
-		url := zerotierCtlApi("/network/" + zerotierNetworkId + "/member/" + address)
-
-		// req, _ := http.NewRequest(http.MethodDelete, url, nil)
-		// res, err := http.DefaultClient.Do(req)
-		// if err == nil && res.StatusCode == 200 {
-		// 	succeeded = true
-		// }
-
-		// Set field "authorized" to false instead of deleting it,
-		// because the ZeroTier's API seems to have problem deleting nodes
-		body, _ := json.Marshal(map[string]interface{}{
-			"authorized": false,
-		})
-		res, err := http.Post(url, "application/json", bytes.NewBuffer(body))
-		if err == nil && res.StatusCode == 200 {
-			succeeded = true
-		}
-
-		if succeeded {
+		if zerotier.RemoveMember(address) {
 			o.Commit()
 			flash.Notice("移除成功")
 		} else {
